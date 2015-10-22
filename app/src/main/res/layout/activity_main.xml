@@ -37,7 +37,9 @@
         android:text="load"
         android:id="@+id/load"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:nestedScrollingEnabled="true"
+        android:onClick="load" />
 
     <Button
         android:layout_width="wrap_content"
