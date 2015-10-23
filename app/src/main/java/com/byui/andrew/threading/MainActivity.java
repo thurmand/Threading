@@ -19,7 +19,6 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    FileOutputStream fOut;
     ArrayList<String> numList = new ArrayList<>();
     private ListView lv;
     ArrayAdapter<String> arrayAdapter;
@@ -30,6 +29,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
+    /**
+     * buttonOnClick
+     *
+     * All the buttons are directed here and then the appropriate method is called
+     *
+     * @param v takes a View
+     */
     public void buttonOnClick(View v){
         switch(v.getId()) {
             case R.id.create:
@@ -44,7 +50,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * create
+     *
+     * Creates a new file called numbers.txt and puts numbers in it
+     *
+     * @param v View
+     */
     public void create(View v) {
+        FileOutputStream fOut;
         try {
             fOut = openFileOutput("numbers.txt", Context.MODE_PRIVATE);
             for (int i = 1; i <= 10; i++) {
@@ -62,6 +76,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     *load
+     *
+     * Loads the file numbers.txt and applies it the listView field
+     *
+     * @param v View
+     */
     public void load(View v) {
         lv = (ListView) findViewById(R.id.listView);
         try {
@@ -93,6 +114,13 @@ public class MainActivity extends AppCompatActivity {
         lv.setAdapter(arrayAdapter);
     }
 
+    /**
+     * clear
+     *
+     * Clears the view list and the arraylist
+     *
+     * @param v View
+     */
     public void clear(View v){
         numList.clear();
         arrayAdapter.clear();
