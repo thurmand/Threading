@@ -8,24 +8,21 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+
 import java.util.ArrayList;
-import java.util.List;
-import java.util.zip.InflaterInputStream;
+
 
 public class MainActivity extends AppCompatActivity {
 
-    FileOutputStream outputStream;
-    ArrayList numList;
+    FileOutputStream fOut;
+    ArrayList<String> numList = new ArrayList<>();
     private ListView lv;
-
+    ArrayAdapter<String> arrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,13 +30,29 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
+    public void buttonOnClick(View v){
+        switch(v.getId()) {
+            case R.id.create:
+                create(v);
+                break;
+            case R.id.load:
+                load(v);
+                break;
+            case R.id.clear:
+                clear(v);
+                break;
+        }
+    }
+
     public void create(View v) {
         try {
-            outputStream = openFileOutput("numbers.txt", Context.MODE_PRIVATE);
-            for (int i = 0; i <= 10; i++) {
-                outputStream.write(i);
+            fOut = openFileOutput("numbers.txt", Context.MODE_PRIVATE);
+            for (int i = 1; i <= 10; i++) {
+                String num = new String(Integer.toString(i) + "\n");
+                System.out.println(num);
+                fOut.write(num.getBytes());
             }
-            outputStream.close();
+            fOut.close();
             Thread.sleep(250);
         } catch (IOException e) {
             e.printStackTrace();
@@ -56,8 +69,11 @@ public class MainActivity extends AppCompatActivity {
             if (fin != null) {
                 InputStreamReader instream = new InputStreamReader(fin);
                 BufferedReader bReader = new BufferedReader(instream);
+                StringBuilder sb = new StringBuilder();
                 String line;
                 while ((line = bReader.readLine()) != null) {
+                    sb.append(line);
+                    System.out.println(line);
                     numList.add(line);
                 }
             }
@@ -69,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         }catch (InterruptedException s){
             s.printStackTrace();
         }
-        ArrayAdapter arrayAdapter = new ArrayAdapter(
+        arrayAdapter = new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_list_item_1,
                 numList);
@@ -77,6 +93,11 @@ public class MainActivity extends AppCompatActivity {
         lv.setAdapter(arrayAdapter);
     }
 
+    public void clear(View v){
+        numList.clear();
+        arrayAdapter.clear();
+        arrayAdapter.notifyDataSetChanged();
+    }
 
 }
 
